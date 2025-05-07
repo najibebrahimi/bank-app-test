@@ -1,0 +1,127 @@
+﻿
+
+
+ @page
+@model BankApp.Pages.CustomerSearchModel
+@{
+    ViewData["Title"] = "Search Customers";
+    Layout = "_Layout";
+}
+
+<h2 class="mt-4">Search Customers</h2>
+
+<div class="card shadow-sm p-4">
+    <form method="get" id="searchForm" class="d-flex justify-content-between">
+        <input type="text" name="searchTerm" id="searchInput" value="@Model.SearchTerm"
+               class="form-control me-2" placeholder="Search by name or city" aria-label="Search Customers" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<div id="loadingIndicator" class="text-center mt-3" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+@if (Model.Customers != null && Model.Customers.Items.Any())
+{
+    <table class="table table-hover table-bordered mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th>Customer Number</th>
+                <th>Personal Number</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>City</th>
+            </tr>
+        </thead>
+        <tbody id="customerTable">
+            @foreach (var customer in Model.Customers.Items)
+            {
+                <tr class="customer-row">
+                    <td><a asp-page="/CustomerDetails" asp-route-id="@customer.CustomerId" class="btn btn-link">@customer.CustomerId</a></td>
+                    <td>@customer.PersonalNumber</td>
+                    <td>@customer.Name</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.City</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.Customers.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" asp-page="/CustomerSearch" asp-route-pageIndex="@(Model.Customers.PageIndex - 1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span> Previous
+                </a>
+            </li>
+
+            @{
+                int maxPageLinks = 10;
+                int startPage = Math.Max(1, Model.Customers.PageIndex - maxPageLinks / 2);
+                int endPage = Math.Min(Model.Customers.TotalPages, startPage + maxPageLinks - 1);
+            }
+
+            @if (startPage > 1)
+            {
+                <li class="page-item"><span class="page-link">...</span></li>
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(Model.Customers.PageIndex == i ? "active" : "")">
+                    <a class="page-link" asp-page="/CustomerSearch" asp-route-pageIndex="@i">@i</a>
+                </li>
+            }
+
+            @if (endPage < Model.Customers.TotalPages)
+            {
+                <li class="page-item"><span class="page-link">...</span></li>
+            }
+
+            <li class="page-item @(Model.Customers.PageIndex == Model.Customers.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-page="/CustomerSearch" asp-route-pageIndex="@(Model.Customers.PageIndex + 1)" aria-label="Next">
+                    Next <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let searchInput = document.getElementById("searchInput");
+        let customerTable = document.getElementById("customerTable");
+        let loadingIndicator = document.getElementById("loadingIndicator");
+
+        searchInput.addEventListener("input", function () {
+            let searchTerm = searchInput.value.trim();
+            if (searchTerm.length >= 2) {
+                fetch(`/CustomerSearch?searchTerm=${searchTerm}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        let parser = new DOMParser();
+                        let newDoc = parser.parseFromString(data, "text/html");
+                        let newTable = newDoc.getElementById("customerTable");
+
+                        if (newTable) {
+                            customerTable.innerHTML = newTable.innerHTML;
+                        }
+                    })
+                    .catch(error => console.error("Error fetching data:", error))
+                    .finally(() => {
+                        loadingIndicator.style.display = "none";
+                    });
+            }
+        });
+
+        document.getElementById("searchForm").addEventListener("submit", function () {
+            loadingIndicator.style.display = "block";
+        });
+    });
+</script>
+
+<link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
+

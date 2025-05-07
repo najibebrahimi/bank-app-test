@@ -1,6 +1,8 @@
+using BankApp.Profiles;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Services;
 
 namespace bank_app_test
 {
@@ -22,7 +24,21 @@ namespace bank_app_test
             builder.Services.AddRazorPages();
 
             builder.Services.AddTransient<DataInitializer>();
- 
+
+            // Register CustomerService
+            builder.Services.AddScoped<Services.CustomerService>();
+
+            // Add AutoMapper and register the mapping profile
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+            //builder.Services.AddScoped<StatisticsService>();
+
+            builder.Services.AddRazorPages();
+
+            builder.Services.AddTransient<DataInitializer>();
+            builder.Services.AddTransient<TransactionService>();
+            builder.Services.AddTransient<Services.CustomerService>();
+
             var app = builder.Build();
 
 
@@ -31,19 +47,6 @@ namespace bank_app_test
                 scope.ServiceProvider.GetService<DataInitializer>().SeedData();
             }
 
-
-
-            //// Add services to the container.
-            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(connectionString));
-            //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            //builder.Services.AddRazorPages();
-
-            //var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -58,16 +61,28 @@ namespace bank_app_test
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
+            app.MapRazorPages();
+
+            app.Run();
+
+
+            //app.UseHttpsRedirection();
+
+            //app.UseRouting();
+
+            //app.UseAuthorization();
+
             //app.MapStaticAssets();
             //app.MapRazorPages()
             //   .WithStaticAssets();
- 
-            app.Run();
+
+            //app.Run();
         }
     }
 }
