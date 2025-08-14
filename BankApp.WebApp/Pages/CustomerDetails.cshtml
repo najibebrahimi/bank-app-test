@@ -1,0 +1,52 @@
+﻿
+
+@page "{id:int}"
+@model BankApp.Pages.CustomerDetailsModel
+@{
+    ViewData["Title"] = "Customer Details";
+}
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Cashier")]
+
+<h2>Customer Details</h2>
+
+<div>
+    <p>Customer Number: @Model.CustomerDetails.CustomerId</p>
+    <p>Personal Number: @Model.CustomerDetails.PersonalNumber</p>
+    <p>Name: @Model.CustomerDetails.Name</p>
+    <p>Address: @Model.CustomerDetails.Address</p>
+    <p>City: @Model.CustomerDetails.City</p>
+    <p>Total Balance: @Model.CustomerDetails.TotalBalance</p>
+
+
+    <section class="text-center mt-3">
+        <a href="/Transfer" class="btn btn-primary btn-lg">
+            <i class="fas fa-exchange-alt"></i> Transfer Funds
+        </a>
+        <a href="/Deposit" class="btn btn-success btn-lg">
+            <i class="fas fa-dollar-sign"></i> Deposit Funds
+        </a>
+        <a href="/Withdraw" class="btn btn-danger btn-lg">
+            <i class="fas fa-money-bill-alt"></i> Withdraw Money
+        </a>
+    </section>
+
+    <h3>Accounts</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Account Number</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model.CustomerDetails.Accounts)
+            {
+                <tr>
+                    <td><a asp-page="AccountDetails" asp-route-id="@account.AccountId">@account.AccountId</a></td>
+                    <td>@account.Balance</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

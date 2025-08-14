@@ -1,0 +1,10 @@
+﻿@model IEnumerable<BankApp.Services.ViewModels.TransactionViewModel>
+
+@foreach (var transaction in Model)
+{
+    <tr>
+        <td>@transaction.Date.ToString("yyyy-MM-dd")</td>
+        <td>@transaction.TypeFormatted</td>
+        <td>@transaction.Amount</td>
+    </tr>
+}

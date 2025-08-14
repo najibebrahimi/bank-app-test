@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{80BBCE35-393F-4564-9773-61F293A1BBE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApp.DataAccessLayer", "BankApp.DataAccessLayer\BankApp.DataAccessLayer.csproj", "{80BBCE35-393F-4564-9773-61F293A1BBE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApi", "BankApi\BankApi.csproj", "{2EA33287-2C08-4E3B-81F2-DDA6A9416E86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApp.Api", "BankApp.Api\BankApp.Api.csproj", "{2EA33287-2C08-4E3B-81F2-DDA6A9416E86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{92F225FF-645B-4326-9122-262B6D8A49ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApp.Services", "BankApp.Services\BankApp.Services.csproj", "{92F225FF-645B-4326-9122-262B6D8A49ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApp", "BankApp\BankApp.csproj", "{CB62EC15-2CAC-40DC-8BC0-6AD790EA6DB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApp.WebApp", "BankApp.WebApp\BankApp.WebApp.csproj", "{CB62EC15-2CAC-40DC-8BC0-6AD790EA6DB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
